@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import {
     setSnakeMoving,
+    setCarMoving,
     setSnakeDirection,
     setGameStart,
     setSnakeSpeedModified,
@@ -32,6 +33,7 @@ import {
 import gtag from '../../utils/tracking';
 
 let gameInterval;
+let lotInterval;
 
 const updateGameView = (
     snake, block, car,
@@ -117,6 +119,7 @@ class SnakeGame extends Component {
         isPause: PropTypes.bool,
         isSpeedModified: PropTypes.bool,
         handleOnSetSnakeMoving: PropTypes.func,
+        handleOnSetCarMoving: PropTypes.func,
         handleOnSetSpeedModified: PropTypes.func,
     }
     static defaultProps = {
@@ -138,43 +141,51 @@ class SnakeGame extends Component {
         isPause: false,
         isSpeedModified: true,
         handleOnSetSnakeMoving: () => { },
+        handleOnSetCarMoving: () => { },
         handleOnSetSpeedModified: () => { },
     }
     componentDidMount() {
         document.addEventListener('keydown', this.handleOnKeyDown);
+        const {
+            handleOnSetCarMoving,
+        } = this.props;
+        lotInterval = setInterval(handleOnSetCarMoving(), 2000);
     }
     componentWillUnmount() {
         document.removeEventListener('keydown', this.handleOnKeyDown);
         clearInterval(gameInterval);
     }
-    componentDidUpdate(prevProps, prevState) {
-        const {
-            isSpeedModified,
-        } = prevProps;
-        const {
-            snake,
-            isGameStart,
-            isPause,
-            handleOnSetSnakeMoving,
-            handleOnSetSpeedModified,
-        } = this.props;
-        if (isPause) {
-            clearInterval(gameInterval);
-        }
-        if (isSpeedModified) { // to udpate speed
-            handleOnSetSpeedModified(false);
-            clearInterval(gameInterval);
-            gameInterval = setInterval(() => {
-                if (isGameStart && !isPause) {
-                    handleOnSetSnakeMoving()
-                }
-            }, snake.get('speed'));
-        }
-        if (!isGameStart) {
-            clearInterval(gameInterval);
-            handleOnSetSpeedModified(true);
-        }
-    }
+    // componentDidUpdate(prevProps, prevState) {
+    //     const {
+    //         isSpeedModified,
+    //     } = prevProps;
+    //     const {
+    //         snake,
+    //         car,
+    //         isGameStart,
+    //         isPause,
+    //         handleOnSetSnakeMoving,
+    //         handleOnSetCarMoving,
+    //         handleOnSetSpeedModified,
+    //     } = this.props;
+
+    //     if (isPause) {
+    //         clearInterval(gameInterval);
+    //     }
+    //     if (isSpeedModified) { // to udpate speed
+    //         handleOnSetSpeedModified(false);
+    //         clearInterval(gameInterval);
+    //         gameInterval = setInterval(() => {
+    //             if (isGameStart && !isPause) {
+    //                 handleOnSetSnakeMoving()
+    //             }
+    //         }, snake.get('speed'));
+    //     }
+    //     if (!isGameStart) {
+    //         clearInterval(gameInterval);
+    //         handleOnSetSpeedModified(true);
+    //     }
+    // }
     handleOnKeyDown = (event) => {
         const {
             handleOnSetSnakeDirection,
@@ -188,10 +199,12 @@ class SnakeGame extends Component {
     handleOnGameStartClick = () => {
         const {
             handleOnSetSnakeMoving,
+            handleOnSetCarMoving,
             handleOnSetGameStart,
         } = this.props;
         handleOnSetGameStart();
         handleOnSetSnakeMoving();
+        handleOnSetCarMoving();
         gtag('event', 'start');
     }
     handleOnVirtualKeyboardClick = (event) => {
@@ -259,6 +272,7 @@ const mapStateToProps = createStructuredSelector({
 
 const mapDispatchToProps = dispatch => ({
     handleOnSetSnakeMoving: () => dispatch(setSnakeMoving()),
+    handleOnSetCarMoving: () => dispatch(setCarMoving()),
     handleOnSetSnakeDirection: (directionType) => dispatch(setSnakeDirection(directionType)),
     handleOnSetGameStart: () => dispatch(setGameStart()),
     handleOnSetSpeedModified: (payload) => dispatch(setSnakeSpeedModified(payload)),

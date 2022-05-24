@@ -3,10 +3,15 @@ import {
     SET_SNAKE_DIRECTION,
     SET_SNAKE_GAME_START,
     SET_SNAKE_SPEED_MODIFIED,
+    SET_CAR_MOVING,
 } from './constants';
 
 export const setSnakeMoving = () => ({
     type: SET_SNAKE_MOVING,
+});
+
+export const setCarMoving = () => ({
+    type: SET_CAR_MOVING,
 });
 
 export const setSnakeDirection = (directionType) => ({

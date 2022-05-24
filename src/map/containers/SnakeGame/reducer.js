@@ -7,6 +7,7 @@ import {
     GAME_WIDTH,
     GAME_HEIGHT,
     SET_SNAKE_MOVING,
+    SET_CAR_MOVING,
     SET_SNAKE_DIRECTION,
     SET_SNAKE_GAME_START,
     SET_SNAKE_SPEED_MODIFIED,
@@ -245,6 +246,21 @@ function snakeGameReducer(state = initialState, action) {
         case SET_SNAKE_GAME_START: {
             return initialState
                 .set('isGameStart', true);
+        }
+
+        case SET_CAR_MOVING: {
+            const car = state.get('car');
+            const headPositionX = car.get('x');
+            const headPositionY = car.get('y');
+            const isEatCar = car.get('x') === headPositionX && car.get('y') === headPositionY;
+            return state
+                // create new car
+                .updateIn(['car'], (car) => {
+                    if (isEatCar) {
+                        return fromJS(createCar());
+                    }
+                    return car;
+                })
         }
 
         default: {
