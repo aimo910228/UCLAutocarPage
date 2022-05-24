@@ -145,11 +145,11 @@ class SnakeGame extends Component {
         handleOnSetSpeedModified: () => { },
     }
     componentDidMount() {
-        document.addEventListener('keydown', this.handleOnKeyDown);
+        // document.addEventListener('keydown', this.handleOnKeyDown);
         const {
             handleOnSetCarMoving,
         } = this.props;
-        lotInterval = setInterval(handleOnSetCarMoving(), 2000);
+        lotInterval = setInterval({handleOnSetCarMoving}, 2000);
     }
     componentWillUnmount() {
         document.removeEventListener('keydown', this.handleOnKeyDown);
@@ -175,12 +175,8 @@ class SnakeGame extends Component {
     //     if (isSpeedModified) { // to udpate speed
     //         handleOnSetSpeedModified(false);
     //         clearInterval(gameInterval);
-    //         gameInterval = setInterval(() => {
-    //             if (isGameStart && !isPause) {
-    //                 handleOnSetSnakeMoving()
-    //             }
-    //         }, snake.get('speed'));
-    //     }
+    // gameInterval = setInterval(() => { if (isGameStart && !isPause) { handleOnSetSnakeMoving() } }, snake.get('speed'));
+    // }
     //     if (!isGameStart) {
     //         clearInterval(gameInterval);
     //         handleOnSetSpeedModified(true);
