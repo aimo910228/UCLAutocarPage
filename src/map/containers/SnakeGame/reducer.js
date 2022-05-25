@@ -1,4 +1,4 @@
-import { fromJS } from 'immutable';
+import { fromJS, get } from 'immutable';
 import {
     INIT,
 } from './constants';
@@ -27,9 +27,25 @@ direction[ARROW_DOWN] = { x: 0, y: 1 };
 direction[ARROW_LEFT] = { x: -1, y: 0 };
 direction[ARROW_RIGHT] = { x: 1, y: 0 };
 
+let carLoc = new Promise((resolve, reject) => {
+    fetch('https://uclautocar.54ucl.com/carlocate', {
+        method: "POST",
+        headers: { "Content-Type": "application/json", 'Accept': 'application/json', },
+    })
+        .then((res) => res.json())
+        .then((location) => {
+            console.log(location.val);
+            console.log(JSON.stringify(location, 0, 4));
+            resolve(location.val.x)
+        })
+        .catch((error) => {
+            console.log(`Error: ${error}`);
+        });
+})
+
 const createCar = () => ({
-    x: Math.floor(Math.random() * GAME_WIDTH),
-    y: 0,
+    x: carLoc.then((data)=>data),
+    y: carLoc.then((data)=>data),
 });
 
 const createAnchorPoint1 = () => ({
@@ -184,7 +200,6 @@ function snakeGameReducer(state = initialState, action) {
                     if (isEatCar) {
                         return maxLength + 1;
                     }
-
                     return maxLength;
                 })
                 // update snake speed after eating car
@@ -249,17 +264,14 @@ function snakeGameReducer(state = initialState, action) {
         }
 
         case SET_CAR_MOVING: {
-            const car = state.get('car');
-            const headPositionX = car.get('x');
-            const headPositionY = car.get('y');
-            const isEatCar = car.get('x') === headPositionX && car.get('y') === headPositionY;
+            // const car = state.get('car');
+            let locX = 2;
+            let locY = 0;
             return state
                 // create new car
                 .updateIn(['car'], (car) => {
-                    if (isEatCar) {
-                        return fromJS(createCar());
-                    }
-                    return car;
+                    console.log(fromJS(createCar()));
+                    return fromJS(createCar());
                 })
         }
 

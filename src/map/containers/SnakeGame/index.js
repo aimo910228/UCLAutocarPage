@@ -149,7 +149,7 @@ class SnakeGame extends Component {
         const {
             handleOnSetCarMoving,
         } = this.props;
-        lotInterval = setInterval({handleOnSetCarMoving}, 2000);
+        lotInterval = setInterval(() => { handleOnSetCarMoving() }, 2000);
     }
     componentWillUnmount() {
         document.removeEventListener('keydown', this.handleOnKeyDown);
