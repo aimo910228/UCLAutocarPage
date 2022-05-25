@@ -19,7 +19,9 @@ import {
     ARROW_LEFT,
     ARROW_RIGHT,
 } from './constants';
+import async from 'async';
 import gtag from '../../utils/tracking';
+
 
 const direction = {};
 direction[ARROW_UP] = { x: 0, y: -1 };
@@ -27,26 +29,81 @@ direction[ARROW_DOWN] = { x: 0, y: 1 };
 direction[ARROW_LEFT] = { x: -1, y: 0 };
 direction[ARROW_RIGHT] = { x: 1, y: 0 };
 
-let carLoc = new Promise((resolve, reject) => {
-    fetch('https://uclautocar.54ucl.com/carlocate', {
-        method: "POST",
-        headers: { "Content-Type": "application/json", 'Accept': 'application/json', },
-    })
-        .then((res) => res.json())
-        .then((location) => {
-            console.log(location.val);
-            console.log(JSON.stringify(location, 0, 4));
-            resolve(location.val.x)
+function carLoc() {
+    //new Promise((resolve, reject) => {
+        fetch('https://uclautocar.54ucl.com/carlocate', {
+            method: "POST",
+            headers: { "Content-Type": "application/json", 'Accept': 'application/json', },
         })
-        .catch((error) => {
-            console.log(`Error: ${error}`);
-        });
-})
+            .then((res) => res.json())
+            .then((location) => {
+                console.log(location.val);
+                console.log(JSON.stringify(location, 0, 4));
+                sessionStorage.setItem("x",location.val.x)
+                sessionStorage.setItem("y",location.val.y)
+                return(location.val.x)
+            })
+            .catch((error) => {
+                console.log(`Error: ${error}`);
+            });
+    //})
+}
 
 const createCar = () => ({
-    x: carLoc.then((data)=>data),
-    y: carLoc.then((data)=>data),
+    x: JSON.parse(sessionStorage.getItem("x")),
+    y: JSON.parse(sessionStorage.getItem("y")),
 });
+
+
+// async function carLoc() {
+//     let response = await fetch(
+//         'https://uclautocar.54ucl.com/carlocate',
+//         {
+//             method: "POST",
+//             headers: { "Content-Type": "application/json", 'Accept': 'application/json', },
+//         })
+//         .then((res) => res.json()).then((location) => {
+//             // console.log(location.val);
+//             return location.val;
+//         })
+//         .catch((error) => {
+//             console.log(`Error: ${error}`);
+//         });
+
+//     return response.text
+// }
+
+// // function carLoc() {
+// // }
+
+// const  createCar = () => ({
+//     x: carLoc(),
+//     y: carLoc(),
+// });
+
+// const createCar = () => {
+//     // // var loc = {};
+
+//     var locX = 0, locY = 0;
+//     fetch('https://uclautocar.54ucl.com/carlocate', {
+//         method: "POST",
+//         headers: { "Content-Type": "application/json", 'Accept': 'application/json', },
+//     })
+//         .then((res) => res.json())
+//         .then((location) => {
+//             console.log(location.val);
+//             console.log(JSON.stringify(location, 0, 4));
+//             locX = location.val.x;
+//             locY = location.val.y;
+//             // return ({ x: locX, y: locY, })
+//         })
+//         .catch((error) => {
+//             console.log(`Error: ${error}`);
+//             // return ({ x: 0, y: 0, })
+//         });
+
+//     return { x: locX, y: locY, }
+// }
 
 const createAnchorPoint1 = () => ({
     x: 151,
@@ -265,8 +322,7 @@ function snakeGameReducer(state = initialState, action) {
 
         case SET_CAR_MOVING: {
             // const car = state.get('car');
-            let locX = 2;
-            let locY = 0;
+            carLoc()
             return state
                 // create new car
                 .updateIn(['car'], (car) => {

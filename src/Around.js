@@ -2,10 +2,7 @@ import React from 'react';
 import { Container, Col, Button, Row } from 'react-bootstrap';
 import "bootstrap-icons/font/bootstrap-icons.css";
 
-// import { Connector } from 'mqtt-react';
-
 export default function Around() {
-    // var myInterval = null;
     function direction(btn) {
         fetch('https://uclautocar.54ucl.com/mqtt', { //http://163.18.26.225:8080/mqtt
             method: "POST",
@@ -42,19 +39,6 @@ export default function Around() {
         e.preventDefault();
     }
 
-    // <input type="button" value="test"
-    //     onMousedown={}
-    //     onTouchstart="ButtonPressed(this);"
-    //     onMouseup="ButtonReleased(this);"
-    //     onMouseout="ButtonReleased(this);"
-    //     onTouchend="ButtonReleased(this);"
-    //     onTouchcancel="ButtonReleased(this);"
-    //     onTouchmove="CancelEvent(event);"
-    // />
-    // var btnClass = classNames('btn', this.props.className, {
-    //     'btn-pressed': this.state.isPressed,
-    //     'btn-over': !this.state.isPressed && this.state.isHovered
-    //   });
     return (
         <>
             <style type="text/css">
@@ -67,32 +51,6 @@ export default function Around() {
             </style>
 
             <Container className='textcenter'>
-                {/* <div class="position-relative" >
-                <Button size="lg" className=" m-3"
-                    onClick={(e) => press("up")}
-                    onTouchMove={CancelEvent}
-                >
-                    <i className="bi bi-arrow-up"></i>
-                </Button>
-                <Button size="lg" className=" m-3"
-                    onClick={(e) => press("left")}
-                    onTouchMove={CancelEvent}
-                >
-                    <i className="bi bi-arrow-left"></i>
-                </Button>
-                <Button size="lg" className=" m-3"
-                    onClick={(e) => press("right")}
-                    onTouchMove={CancelEvent}
-                >
-                    <i className="bi bi-arrow-right"></i>
-                </Button>
-                <Button size="lg" className="m-3"
-                    onClick={(e) => press("down")}
-                    onTouchMove={CancelEvent}
-                >
-                    <i className="bi bi-arrow-down"></i>
-                </Button>
-            </div> */}
                 <Row>
                     <Col md={{ span: 2, offset: 3 }}></Col>
                     <Col md={2}>
@@ -127,7 +85,7 @@ export default function Around() {
                             <i className="bi bi-arrow-left"></i>
                         </Button>
                     </Col>
-                    <Col md={2}></Col>
+                    <Col md={2}><h4>鏡頭</h4><h4>控制</h4><h4>按鈕</h4></Col>
                     <Col md={2}>
                         <Button variant="cam" size="lg" className=" m-3"
                             onClick={(e) => press("right")}

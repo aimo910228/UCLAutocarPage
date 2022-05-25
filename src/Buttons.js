@@ -41,20 +41,6 @@ export default function MQttButton() {
     function CancelEvent(e) {
         e.preventDefault();
     }
-
-    // <input type="button" value="test"
-    //     onMousedown={}
-    //     onTouchstart="ButtonPressed(this);"
-    //     onMouseup="ButtonReleased(this);"
-    //     onMouseout="ButtonReleased(this);"
-    //     onTouchend="ButtonReleased(this);"
-    //     onTouchcancel="ButtonReleased(this);"
-    //     onTouchmove="CancelEvent(event);"
-    // />
-    // var btnClass = classNames('btn', this.props.className, {
-    //     'btn-pressed': this.state.isPressed,
-    //     'btn-over': !this.state.isPressed && this.state.isHovered
-    //   });
     return (
 
         <>
@@ -102,7 +88,7 @@ export default function MQttButton() {
                         >
                             <i className="bi bi-arrow-left"></i>
                         </Button></Col>
-                    <Col md={2}></Col>
+                    <Col md={2}><h4>車子</h4><h4>遙控</h4><h4>按鈕</h4></Col>
                     <Col md={2}>
                         <Button variant="car" size="lg" className="m-3"
                             onMouseDown={(e) => press("3")}
