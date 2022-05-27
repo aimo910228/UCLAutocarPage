@@ -1,0 +1,7 @@
+@import "~bootstrap/scss/bootstrap";
+
+.ratio-16x9 {
+    @include media-breakpoint-down(md) {
+        --bs-aspect-ratio: 100%; // 2x1
+    }
+}

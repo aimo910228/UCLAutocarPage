@@ -1,22 +1,22 @@
 import React from 'react';
-class UpdateTime extends React.Component {
+class Cardata extends React.Component {
     constructor(props) {
         super(props);
-        this.state = { updateDateTime: Date().toLocaleString() };
+        this.state = { battery: '' };
     }
 
     tick() {
         //new Promise((resolve, reject) => {
-        fetch('https://uclautocar.54ucl.com/carlocate', {
+        fetch('https://uclautocar.54ucl.com/carinfo', {
             method: "POST",
             headers: { "Content-Type": "application/json", 'Accept': 'application/json', },
         })
             .then((res) => res.json())
-            .then((location) => {
-                console.log(location.time);
-                console.log(JSON.stringify(location, 0, 4));
+            .then((data) => {
+                // console.log(data.val);
+                console.log(JSON.stringify(data, 0, 4));
                 this.setState(() => ({
-                    updateDateTime: location.time
+                    battery: data.val
                 }));
             })
             .catch((error) => {
@@ -35,12 +35,11 @@ class UpdateTime extends React.Component {
 
     render() {
         return (
-
-            <p>{this.state.updateDateTime}</p>
+            <p>車子{this.state.battery}</p>
         );
 
 
     }
 
 }
-export default UpdateTime;
+export default Cardata;

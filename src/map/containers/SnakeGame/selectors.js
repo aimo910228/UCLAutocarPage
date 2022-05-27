@@ -67,6 +67,12 @@ const makeSelectisGameStart = () =>
         tictactoeState.get('isGameStart'),
     );
 
+const makeSelectisMapDisabled = () =>
+    createSelector(selectSnakeGame, tictactoeState =>
+        tictactoeState.get('isMapDisabled'),
+    );
+
+
 const makeSelectScore = () =>
     createSelector(selectSnakeGame, tictactoeState =>
         tictactoeState.get('score'),
@@ -97,6 +103,7 @@ export {
     makeSelectAnchorPoint21,
     makeSelectAnchorPoint22,
     makeSelectisGameStart,
+    makeSelectisMapDisabled,
     makeSelectScore,
     makeSelectIsPause,
     makeSelectIsSpeedModified,

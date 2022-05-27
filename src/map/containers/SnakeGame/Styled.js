@@ -60,7 +60,7 @@ export const StyledSnakeGame = styled.div`
         border: 0px solid black;
         box-sizing: border-box;
     }
-    .snake-game__draw-snake-car {
+    .snake-game__draw-car{
         background: red;
         border-radius: 100%;
         animation: ${pulse} 2s infinite;
@@ -71,4 +71,17 @@ export const StyledSnakeGame = styled.div`
         border-radius: 100%;
         animation: ${pulseA} 2s infinite;
     }
+    .snake-game__panel {
+        width: 90vw;
+        height: calc(1286 / 2048 * 90vw);
+        position: absolute;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        background-color: gray;
+        left: -0.4vw;
+        right: 0;
+    }
+
 `;

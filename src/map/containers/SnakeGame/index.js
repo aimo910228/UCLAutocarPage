@@ -8,6 +8,7 @@ import {
     setCarMoving,
     setSnakeDirection,
     setGameStart,
+    setMapDisabled,
     setSnakeSpeedModified,
 } from './actions';
 import { StyledSnakeGame } from './Styled';
@@ -26,6 +27,7 @@ import {
     makeSelectAnchorPoint21,
     makeSelectAnchorPoint22,
     makeSelectisGameStart,
+    makeSelectisMapDisabled,
     makeSelectScore,
     makeSelectIsPause,
     makeSelectIsSpeedModified,
@@ -42,58 +44,47 @@ const updateGameView = (
     anchorPoint15, anchorPoint20, anchorPoint21, anchorPoint22,
 ) => {
     // draw car
-    if (block.get('x') === car.get('x') &&
-        block.get('y') === car.get('y')) {
-        return 'snake-game__draw-snake-car';
+    if (block.get('x') === car.get('x') && block.get('y') === car.get('y')) {
+        return 'snake-game__draw-car';
     }
     // draw anchorPoint1
-    if (block.get('x') === anchorPoint1.get('x') &&
-        block.get('y') === anchorPoint1.get('y')) {
+    if (block.get('x') === anchorPoint1.get('x') && block.get('y') === anchorPoint1.get('y')) {
         return 'snake-game__draw-snake-anchorPoint';
     }
     // draw anchorPoint2
-    if (block.get('x') === anchorPoint2.get('x') &&
-        block.get('y') === anchorPoint2.get('y')) {
+    if (block.get('x') === anchorPoint2.get('x') && block.get('y') === anchorPoint2.get('y')) {
         return 'snake-game__draw-snake-anchorPoint';
     }
     // draw anchorPoint3
-    if (block.get('x') === anchorPoint3.get('x') &&
-        block.get('y') === anchorPoint3.get('y')) {
+    if (block.get('x') === anchorPoint3.get('x') && block.get('y') === anchorPoint3.get('y')) {
         return 'snake-game__draw-snake-anchorPoint';
     }
     // draw anchorPoint4
-    if (block.get('x') === anchorPoint4.get('x') &&
-        block.get('y') === anchorPoint4.get('y')) {
+    if (block.get('x') === anchorPoint4.get('x') && block.get('y') === anchorPoint4.get('y')) {
         return 'snake-game__draw-snake-anchorPoint';
     }
     // draw anchorPoint9
-    if (block.get('x') === anchorPoint9.get('x') &&
-        block.get('y') === anchorPoint9.get('y')) {
+    if (block.get('x') === anchorPoint9.get('x') && block.get('y') === anchorPoint9.get('y')) {
         return 'snake-game__draw-snake-anchorPoint';
     }
     // draw anchorPoint10
-    if (block.get('x') === anchorPoint10.get('x') &&
-        block.get('y') === anchorPoint10.get('y')) {
+    if (block.get('x') === anchorPoint10.get('x') && block.get('y') === anchorPoint10.get('y')) {
         return 'snake-game__draw-snake-anchorPoint';
     }
     // draw anchorPoint15
-    if (block.get('x') === anchorPoint15.get('x') &&
-        block.get('y') === anchorPoint15.get('y')) {
+    if (block.get('x') === anchorPoint15.get('x') && block.get('y') === anchorPoint15.get('y')) {
         return 'snake-game__draw-snake-anchorPoint';
     }
     // draw anchorPoint20
-    if (block.get('x') === anchorPoint20.get('x') &&
-        block.get('y') === anchorPoint20.get('y')) {
+    if (block.get('x') === anchorPoint20.get('x') && block.get('y') === anchorPoint20.get('y')) {
         return 'snake-game__draw-snake-anchorPoint';
     }
     // draw anchorPoint21
-    if (block.get('x') === anchorPoint21.get('x') &&
-        block.get('y') === anchorPoint21.get('y')) {
+    if (block.get('x') === anchorPoint21.get('x') && block.get('y') === anchorPoint21.get('y')) {
         return 'snake-game__draw-snake-anchorPoint';
     }
     // draw anchorPoint22
-    if (block.get('x') === anchorPoint22.get('x') &&
-        block.get('y') === anchorPoint22.get('y')) {
+    if (block.get('x') === anchorPoint22.get('x') && block.get('y') === anchorPoint22.get('y')) {
         return 'snake-game__draw-snake-anchorPoint';
     }
     return 'snake-game__map-block-item';
@@ -115,6 +106,7 @@ class SnakeGame extends Component {
         anchorPoint21: PropTypes.instanceOf(Map),
         anchorPoint22: PropTypes.instanceOf(Map),
         isGameStart: PropTypes.bool,
+        isMapDisabled: PropTypes.bool,
         score: PropTypes.number,
         isPause: PropTypes.bool,
         isSpeedModified: PropTypes.bool,
@@ -137,6 +129,7 @@ class SnakeGame extends Component {
         anchorPoint21: Map(),
         anchorPoint22: Map(),
         isGameStart: false,
+        isMapDisabled: false,
         score: 0,
         isPause: false,
         isSpeedModified: true,
@@ -149,7 +142,7 @@ class SnakeGame extends Component {
         const {
             handleOnSetCarMoving,
         } = this.props;
-        lotInterval = setInterval(() => { handleOnSetCarMoving() }, 2000);
+        lotInterval = setInterval(() => { handleOnSetCarMoving() }, 1000);
     }
     componentWillUnmount() {
         document.removeEventListener('keydown', this.handleOnKeyDown);
@@ -163,6 +156,7 @@ class SnakeGame extends Component {
     //         snake,
     //         car,
     //         isGameStart,
+    //         isMapDisabled,
     //         isPause,
     //         handleOnSetSnakeMoving,
     //         handleOnSetCarMoving,
@@ -175,9 +169,13 @@ class SnakeGame extends Component {
     //     if (isSpeedModified) { // to udpate speed
     //         handleOnSetSpeedModified(false);
     //         clearInterval(gameInterval);
-    // gameInterval = setInterval(() => { if (isGameStart && !isPause) { handleOnSetSnakeMoving() } }, snake.get('speed'));
-    // }
+    //         gameInterval = setInterval(() => { if (isGameStart && !isPause) { handleOnSetSnakeMoving() } }, snake.get('speed'));
+    //     }
     //     if (!isGameStart) {
+    //         clearInterval(gameInterval);
+    //         handleOnSetSpeedModified(true);
+    //     }
+    //     if (!isMapDisabled) {
     //         clearInterval(gameInterval);
     //         handleOnSetSpeedModified(true);
     //     }
@@ -197,8 +195,9 @@ class SnakeGame extends Component {
             handleOnSetSnakeMoving,
             handleOnSetCarMoving,
             handleOnSetGameStart,
+            handleOnSetMapDisabled,
         } = this.props;
-        handleOnSetGameStart();
+        handleOnSetMapDisabled();
         handleOnSetSnakeMoving();
         handleOnSetCarMoving();
         gtag('event', 'start');
@@ -217,13 +216,19 @@ class SnakeGame extends Component {
 
     render() {
         const {
-            snake, blocks, car,
+            isMapDisabled, snake, blocks, car,
             anchorPoint1, anchorPoint2, anchorPoint3,
             anchorPoint4, anchorPoint9, anchorPoint10,
             anchorPoint15, anchorPoint20, anchorPoint21, anchorPoint22,
         } = this.props;
         return (
             <StyledSnakeGame onKeyDown={this.handleOnKeyDown}>
+                {
+                    isMapDisabled &&
+                    <div className="snake-game__panel">
+                        <h5>目前無車輛定位資料</h5>
+                    </div>
+                }
                 <div className="snake-game__map-wrapper">
                     {
                         blocks.map((rows) => (
@@ -260,7 +265,7 @@ const mapStateToProps = createStructuredSelector({
     anchorPoint20: makeSelectAnchorPoint20(),
     anchorPoint21: makeSelectAnchorPoint21(),
     anchorPoint22: makeSelectAnchorPoint22(),
-    isGameStart: makeSelectisGameStart(),
+    isMapDisabled: makeSelectisMapDisabled(),
     score: makeSelectScore(),
     isPause: makeSelectIsPause(),
     isSpeedModified: makeSelectIsSpeedModified(),
@@ -271,6 +276,7 @@ const mapDispatchToProps = dispatch => ({
     handleOnSetCarMoving: () => dispatch(setCarMoving()),
     handleOnSetSnakeDirection: (directionType) => dispatch(setSnakeDirection(directionType)),
     handleOnSetGameStart: () => dispatch(setGameStart()),
+    handleOnSetMapDisabled: () => dispatch(setMapDisabled()),
     handleOnSetSpeedModified: (payload) => dispatch(setSnakeSpeedModified(payload)),
 });
 

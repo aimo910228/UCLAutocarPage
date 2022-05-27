@@ -21,6 +21,7 @@ export default function MQttButton() {
 
     function press(btn) {
         direction(btn);
+        console.log('click ' + btn)
         if (btn !== "0") {
             myInterval = setInterval(direction, 200, btn);
 

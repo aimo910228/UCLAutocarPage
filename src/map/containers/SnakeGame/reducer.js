@@ -10,6 +10,7 @@ import {
     SET_CAR_MOVING,
     SET_SNAKE_DIRECTION,
     SET_SNAKE_GAME_START,
+    SET_MAP_DISABLED,
     SET_SNAKE_SPEED_MODIFIED,
     SNAKE_LIMITED_SPEED,
     SNAKE_INITIAL_SPEED,
@@ -31,127 +32,82 @@ direction[ARROW_RIGHT] = { x: 1, y: 0 };
 
 function carLoc() {
     //new Promise((resolve, reject) => {
-        fetch('https://uclautocar.54ucl.com/carlocate', {
-            method: "POST",
-            headers: { "Content-Type": "application/json", 'Accept': 'application/json', },
+    fetch('https://uclautocar.54ucl.com/carlocate', {
+        method: "POST",
+        headers: { "Content-Type": "application/json", 'Accept': 'application/json', },
+    })
+        .then((res) => res.json())
+        .then((location) => {
+            console.log(location.val);
+            // console.log(JSON.stringify(location, 0, 4));
+            const isCarfalse = (typeof (location.val.x) != 'number' || typeof (location.val.y) != 'number') ||
+                !(location.val.x >= 0 && location.val.x < GAME_WIDTH) ||
+                !(location.val.y >= 0 && location.val.y <= GAME_HEIGHT);
+            console.log(isCarfalse)
+            sessionStorage.setItem("x", location.val.x)
+            sessionStorage.setItem("y", location.val.y)
+            sessionStorage.setItem("isCarfalse", isCarfalse)
+            return (location.val.x)
         })
-            .then((res) => res.json())
-            .then((location) => {
-                console.log(location.val);
-                console.log(JSON.stringify(location, 0, 4));
-                sessionStorage.setItem("x",location.val.x)
-                sessionStorage.setItem("y",location.val.y)
-                return(location.val.x)
-            })
-            .catch((error) => {
-                console.log(`Error: ${error}`);
-            });
+        .catch((error) => {
+            console.log(`Error: ${error}`);
+        });
     //})
 }
 
 const createCar = () => ({
     x: JSON.parse(sessionStorage.getItem("x")),
-    y: JSON.parse(sessionStorage.getItem("y")),
+    y: 113 - JSON.parse(sessionStorage.getItem("y")),
 });
 
-
-// async function carLoc() {
-//     let response = await fetch(
-//         'https://uclautocar.54ucl.com/carlocate',
-//         {
-//             method: "POST",
-//             headers: { "Content-Type": "application/json", 'Accept': 'application/json', },
-//         })
-//         .then((res) => res.json()).then((location) => {
-//             // console.log(location.val);
-//             return location.val;
-//         })
-//         .catch((error) => {
-//             console.log(`Error: ${error}`);
-//         });
-
-//     return response.text
-// }
-
-// // function carLoc() {
-// // }
-
-// const  createCar = () => ({
-//     x: carLoc(),
-//     y: carLoc(),
-// });
-
-// const createCar = () => {
-//     // // var loc = {};
-
-//     var locX = 0, locY = 0;
-//     fetch('https://uclautocar.54ucl.com/carlocate', {
-//         method: "POST",
-//         headers: { "Content-Type": "application/json", 'Accept': 'application/json', },
-//     })
-//         .then((res) => res.json())
-//         .then((location) => {
-//             console.log(location.val);
-//             console.log(JSON.stringify(location, 0, 4));
-//             locX = location.val.x;
-//             locY = location.val.y;
-//             // return ({ x: locX, y: locY, })
-//         })
-//         .catch((error) => {
-//             console.log(`Error: ${error}`);
-//             // return ({ x: 0, y: 0, })
-//         });
-
-//     return { x: locX, y: locY, }
-// }
-
 const createAnchorPoint1 = () => ({
-    x: 151,
-    y: 113 - 99,
+    x: sessionStorage.getItem("isCarfalse") === "false" ? 151 : -1,
+    y: sessionStorage.getItem("isCarfalse") === "false" ? 113 - 99 : -1,
 });
 
 const createAnchorPoint2 = () => ({
-    x: 144,
-    y: 113 - 63,
+    x: sessionStorage.getItem("isCarfalse") === "false" ? 144 : -1,
+    y: sessionStorage.getItem("isCarfalse") === "false" ? 113 - 63 : -1,
 });
 const createAnchorPoint3 = () => ({
-    x: 151,
-    y: 113 - 26,
+    x: sessionStorage.getItem("isCarfalse") === "false" ? 151 : -1,
+    y: sessionStorage.getItem("isCarfalse") === "false" ? 113 - 26 : -1,
 });
 
 const createAnchorPoint4 = () => ({
-    x: 136,
-    y: 113 - 0,
+    x: sessionStorage.getItem("isCarfalse") === "false" ? 136 : -1,
+    y: sessionStorage.getItem("isCarfalse") === "false" ? 113 - 0 : -1,
 });
 
 const createAnchorPoint9 = () => ({
-    x: 100,
-    y: 113 - 7,
+    x: sessionStorage.getItem("isCarfalse") === "false" ? 100 : -1,
+    y: sessionStorage.getItem("isCarfalse") === "false" ? 113 - 7 : -1,
 });
 
 const createAnchorPoint10 = () => ({
-    x: 73,
-    y: 113 - 7,
+    x: sessionStorage.getItem("isCarfalse") === "false" ? 73 : -1,
+    y: sessionStorage.getItem("isCarfalse") === "false" ? 113 - 7 : -1,
 });
 
 const createAnchorPoint15 = () => ({
-    x: 0,
-    y: 113 - 14,
+    x: sessionStorage.getItem("isCarfalse") === "false" ? 0 : -1,
+    y: sessionStorage.getItem("isCarfalse") === "false" ? 113 - 14 : -1,
 });
 
 const createAnchorPoint20 = () => ({
-    x: 46,
-    y: 113 - 0,
+    x: sessionStorage.getItem("isCarfalse") === "false" ? 46 : -1,
+    y: sessionStorage.getItem("isCarfalse") === "false" ? 113 - 0 : -1,
 });
 
 const createAnchorPoint21 = () => ({
-    x: 14,
-    y: 113 - 7,
+    x: sessionStorage.getItem("isCarfalse") === "false" ? 14 : -1,
+    y: sessionStorage.getItem("isCarfalse") === "false" ? 113 - 7 : -1,
 });
 
 const createAnchorPoint22 = () => ({
-    x: 164,
-    y: 113 - 1,
+    x: sessionStorage.getItem("isCarfalse") === "false" ? 164 : -1,
+    y: sessionStorage.getItem("isCarfalse") === "false" ? 113 - 1 : -1,
+
 });
 
 const defaultSnake = {
@@ -178,10 +134,13 @@ const defaultBlocks = _.range(0, GAME_HEIGHT).map((value, indexY) => (
     ))
 ));
 
+
+
 const initialState = fromJS({
     blocks: defaultBlocks,
     snake: defaultSnake,
     car: createCar(),
+    isMapDisabled: false,
     anchorPoint1: createAnchorPoint1(),
     anchorPoint2: createAnchorPoint2(),
     anchorPoint3: createAnchorPoint3(),
@@ -320,15 +279,45 @@ function snakeGameReducer(state = initialState, action) {
                 .set('isGameStart', true);
         }
 
+        case SET_MAP_DISABLED: {
+            const car = state.get('car');
+            const PositionX = car.get('x');
+            const PositionY = car.get('y');
+            const isCarfalse = typeof (PositionX) != Number;
+            console.log(car)
+
+
+            if (isCarfalse) {
+                return initialState
+                    .set('isMapDisabled', true);
+            }
+            return initialState
+                .set('isMapDisabled', true);
+        }
+
         case SET_CAR_MOVING: {
-            // const car = state.get('car');
             carLoc()
+            console.log(((sessionStorage.getItem("isCarfalse")) === "true") + 'isMapDisabled')
+
             return state
                 // create new car
                 .updateIn(['car'], (car) => {
-                    console.log(fromJS(createCar()));
+                    // console.log(fromJS(createCar()));
                     return fromJS(createCar());
                 })
+                .updateIn(['anchorPoint1'], (anchorPoint1) => { return fromJS(createAnchorPoint1()) })
+                .updateIn(['anchorPoint2'], (anchorPoint1) => { return fromJS(createAnchorPoint2()) })
+                .updateIn(['anchorPoint3'], (anchorPoint1) => { return fromJS(createAnchorPoint3()) })
+                .updateIn(['anchorPoint4'], (anchorPoint1) => { return fromJS(createAnchorPoint4()) })
+                .updateIn(['anchorPoint9'], (anchorPoint1) => { return fromJS(createAnchorPoint9()) })
+                .updateIn(['anchorPoint10'], (anchorPoint1) => { return fromJS(createAnchorPoint10()) })
+                .updateIn(['anchorPoint15'], (anchorPoint1) => { return fromJS(createAnchorPoint15()) })
+                .updateIn(['anchorPoint20'], (anchorPoint1) => { return fromJS(createAnchorPoint20()) })
+                .updateIn(['anchorPoint21'], (anchorPoint1) => { return fromJS(createAnchorPoint21()) })
+                .updateIn(['anchorPoint22'], (anchorPoint1) => { return fromJS(createAnchorPoint22()) })
+                .set('isMapDisabled', sessionStorage.getItem("isCarfalse") === "true")
+                
+                ;
         }
 
         default: {

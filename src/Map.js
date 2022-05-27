@@ -8,18 +8,24 @@ import store from './map/store';
 
 export default function MyMap() {
 
-	return (
-		<Row
-			style={{
-				width: '100%',
-				justifyContent: 'center',
-			}}
-		>
-			<Provider store={store}>
-				<SnakeGame />
-			</Provider>
+    return (
+        <Row style={{
+            position: 'relative',
+            width: '90vw',
+            height: 'calc(1286 / 2048 * 90vw)',
+            justifyContent: 'center',
+            backgroundImage: `url(c2n.png)`,
+            backgroundSize: "cover",
+            // backgroundColor: 'black',
+            display: 'block',
+            paddingLeft: '0',
+            paddingRight: '0',
+        }}>
+            <Provider store={store}>
+                <SnakeGame />
+            </Provider>
+        </Row>
+    )
 
-		</Row>
-	)
 
 }

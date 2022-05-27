@@ -3,7 +3,7 @@ import { Container, Ratio, Row, Spinner } from 'react-bootstrap';
 // import { BehaviorSubject } from 'rxjs';
 import './Camera.scss'
 
-export default class Camera extends Component {
+export default class IPCamera extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -22,26 +22,25 @@ export default class Camera extends Component {
 
 
     render() {
-
+        // http://camera.buffalotrace.com/mjpg/video.mjpg
+        // http://pendelcam.kip.uni-heidelberg.de/mjpg/video.mjpg
         return (
-            <Row style={{ maxWidth: '1024px', justifyContent: 'center' }}>
+            <div>
                 {
                     this.state.loading ? (
                         <Spinner animation="grow" variant="primary" />
                     ) : null
                 }
-                <Ratio aspectRatio="16x9" style={{ maxWidth: '1024px', justifyContent: 'center' }}>
+                <Ratio aspectRatio="16x9">
                     <iframe
                         scrolling="no" frameBorder="0"
-                        src="https://uclautocar.54ucl.com:8086/#/"
+                        src="http://camera.buffalotrace.com/mjpg/video.mjpg"
                         title='UCL AutoCar Camera Page'
                         allow="camera *;microphone *"
                         onLoad={this.myframe}
-                        style={{ display: 'block' }}
-
                     />
                 </Ratio>
-            </Row>
+            </div>
         )
     }
 
